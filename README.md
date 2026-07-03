@@ -1,84 +1,115 @@
-# AuditTrail AI 
+# AuditTrail AI
 
 Developed exclusively for **The Hangover Part AI** Hackathon.
 
-An ultra-fast, local-first Security Operations Center (SOC) dashboard that parses raw, unstructured network scans into an actionable vulnerability timeline and local knowledge graph.
+## Overview
+
+AuditTrail AI is a lightweight, privacy-first Security Operations Center (SOC) log analysis application that processes raw security logs entirely on-device. It combines deterministic parsing, rule-based risk analysis, local knowledge graph storage, and SQLite-backed report tracking to provide fast, consistent, and API-free security analysis.
 
 ---
 
-##  The Core Problem & Our Twist
-
-Most traditional AI-driven security log analyzers suffer from high cloud latency, unpredictable runtime costs, and "Context Amnesia"—frequently misinterpreting or completely dropping open network properties across scanning sessions. 
-
-###  Built WITHOUT External Cloud AI APIs
-To solve this reliably for enterprise security workflows, **AuditTrail AI purposefully does not use external cloud-based LLM or generative AI endpoints.** Instead, we achieved high-fidelity security analysis and structured data tracking using a 100% free, deterministic, and blazing-fast local architecture.
-
----
-
-##  The Local-First Architecture
-
-The application handles incoming logs cleanly through a completely non-blocking asynchronous pipeline:
-
-1. **Fast Deterministic Extraction (`parser_engine.py`):** Uses optimized Regular Expressions (Regex) to instantly strip target hosts, operating systems, and active port numbers out of raw text files.
-2. **Hardcoded Threat Matrix (`rules_engine.py`):** Passes the extracted configuration arrays through a static, zero-cost cybersecurity vulnerability matrix. It scores threats automatically (Critical, High, Medium, Low) and attaches exact mitigation steps without hallucination risks.
-3. **Cognee Local Memory Network:** Integrates **Cognee's native data framework structural layer**. Extracted metadata packages are wrapped directly into `DataItem` entities and offloaded to a dedicated background event loop using `asyncio.run_coroutine_threadsafe()`. This satisfies structural graph requirements completely locally.
-4. **Relational Persistence Layer:** Simultaneously commits report snapshots into a local SQLite repository to power a lightning-fast, dark-mode monitoring interface.
-
----
-
-##  Tech Stack
-
-* **Core Language:** Python 3.14
-* **Web Framework:** Flask (Multi-threaded backend)
-* **Data & Graph Engine:** Cognee (Local Structural Memory Layer)
-* **Database:** SQLite3
-* **Asynchronous Control:** Threading & Asyncio (Non-blocking worker pool configuration)
-
----
-
-##  The End-to-End Workflow
+## System Architecture
 
 ```text
-                 [ User Uploads File ] 
+                 [ User Uploads File ]
                          │
                          ▼
-         1. FAST REGEX PARSING (parser_engine.py) 
-     Strips raw text into clear variables (IP, OS, ports)
+        1. FAST REGEX PARSING (parser_engine.py)
+     Extracts structured information such as IP addresses,
+           operating systems, ports, and services.
                          │
                          ▼
-       2. ZERO-COST SECURITY MATRIX (rules_engine.py)
-      Maps risk categories, scores danger, adds fixes
-                         │
+      2. ZERO-COST SECURITY MATRIX (rules_engine.py)
+      Classifies vulnerabilities, calculates risk scores,
+          and generates mitigation recommendations.
              ┌───────────┴───────────┐
              ▼                       ▼
-    3. COGNEE LOCAL STORAGE    4. SQLITE DASHBOARD
-     Creates data graph node    Saves report state for
-    with metadata attributes   the history timeline UI
-             │                       │
+  3. COGNEE LOCAL STORAGE      4. SQLITE DATABASE
+ Creates knowledge graph      Stores scan reports and
+ nodes with metadata for      maintains dashboard history.
+ contextual relationships.
              └───────────┬───────────┘
                          ▼
-            [ 5. Interactive SOC Screen ]
+              5. INTERACTIVE SOC DASHBOARD
+      Displays findings, risk summaries, and report history.
+```
 
+---
 
-  ## Quick Start & Installation
+## Features
 
-1. Clone & Set Up Environment
+* Fast regex-based log parsing
+* Rule-based security risk assessment
+* Automatic vulnerability categorization
+* Risk scoring with remediation suggestions
+* Local Cognee knowledge graph integration
+* SQLite report history and persistence
+* Interactive SOC dashboard
+* Fully offline processing (no external API dependency)
 
-'''Bash 
-        git clone [https://github.com/nehasawant/audittrail-ai.git](https://github.com/nehasawant/audittrail-ai.git)
-        cd audittrail-ai
-        python3 -m venv .venv
-        source .venv/bin/activate
-        pip install -r requirements.txt
+---
 
-2. Launch the SOC Dashboard
+## Quick Start
 
-''' Bash
-         python app.py
+### 1. Clone the Repository
 
-Open your browser and navigate to http://127.0.0.1:5000 to upload raw log files and observe live processing!
+```bash
+git clone https://github.com/nehasawant/audittrail-ai.git
+cd audittrail-ai
+```
 
+### 2. Create a Virtual Environment
 
-###   Conclusion
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-AuditTrail AI demonstrates a reliable, practical approach to log analysis. By utilizing deterministic parsing alongside local structural tracking through Cognee, the system handles data pipeline requirements entirely on-device. This setup provides security analysts with a private tool that operates with minimal overhead, eliminates API latency, and ensures data consistency without relying on external endpoints.
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Launch the Application
+
+```bash
+python app.py
+```
+
+Open your browser and visit:
+
+```
+http://127.0.0.1:5000
+```
+
+Upload a supported log file to view real-time parsing, security analysis, and interactive SOC reports.
+
+---
+
+## Technology Stack
+
+* Python
+* Flask
+* SQLite
+* Cognee
+* HTML
+* CSS
+* JavaScript
+
+---
+
+## Project Workflow
+
+1. Upload a raw security log.
+2. Parse log entries into structured data.
+3. Apply rule-based security analysis.
+4. Generate risk scores and remediation guidance.
+5. Store analysis in Cognee and SQLite.
+6. Display findings through the SOC dashboard.
+
+---
+
+## Conclusion
+
+AuditTrail AI provides a practical and privacy-focused approach to security log analysis. By combining deterministic parsing with rule-based detection and local data storage, the application performs the complete analysis pipeline without relying on external APIs or cloud services. This architecture minimizes latency, preserves sensitive log data, ensures consistent results, and offers security analysts an efficient offline solution for reviewing and managing security events.
