@@ -11,7 +11,7 @@ An ultra-fast, local-first Security Operations Center (SOC) dashboard that parse
 Most traditional AI-driven security log analyzers suffer from high cloud latency, unpredictable runtime costs, and "Context Amnesia"—frequently misinterpreting or completely dropping open network properties across scanning sessions. 
 
 ###  Built WITHOUT External Cloud AI APIs
-To solve this reliably for enterprise security workflows, **AuditTrail AI purposefully does not use external cloud-based LLM or generative AI endpoints.** Instead, we achieved high-fidelity security analysis and structured data tracking using a 100% free, deterministic, and deterministic-fast local architecture.
+To solve this reliably for enterprise security workflows, **AuditTrail AI purposefully does not use external cloud-based LLM or generative AI endpoints.** Instead, we achieved high-fidelity security analysis and structured data tracking using a 100% free, deterministic, and blazing-fast local architecture.
 
 ---
 
@@ -36,42 +36,49 @@ The application handles incoming logs cleanly through a completely non-blocking 
 
 ---
 
+##  The End-to-End Workflow
 
-## The End-to-End Workflow
-
-
+```text
                  [ User Uploads File ] 
                          │
                          ▼
-         1. FAST REGEX PARSING (parses.py) 
+         1. FAST REGEX PARSING (parser_engine.py) 
      Strips raw text into clear variables (IP, OS, ports)
                          │
                          ▼
-         2. ZERO-COST SECURITY MATRIX (rules_engine.py)
-    Maps risk categories, scores danger, adds fixes
-           │
- ┌─────────┴─────────┐
- ▼                   ▼
- 3. COGNEE LOCAL STORAGE     4. SQLITE DASHBOARD
-    Creates data graph node     Saves report state for
-    with metadata attributes    the history timeline UI
-           │                   │
-           └─────────┬─────────┘
-                     ▼
-        [ 5. Interactive SOC Screen ]
+       2. ZERO-COST SECURITY MATRIX (rules_engine.py)
+      Maps risk categories, scores danger, adds fixes
+                         │
+             ┌───────────┴───────────┐
+             ▼                       ▼
+    3. COGNEE LOCAL STORAGE    4. SQLITE DASHBOARD
+     Creates data graph node    Saves report state for
+    with metadata attributes   the history timeline UI
+             │                       │
+             └───────────┬───────────┘
+                         ▼
+            [ 5. Interactive SOC Screen ]
 
 
+  ## Quick Start & Installation
 
-##  Quick Start & Installation
+1. Clone & Set Up Environment
 
-### 1. Clone & Set Up Environment
-```bash
-git clone [https://github.com/nehasawant/audittrail-ai.git](https://github.com/nehasawant/audittrail-ai.git)
-cd audittrail-ai
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+'''Bash 
+        git clone [https://github.com/nehasawant/audittrail-ai.git](https://github.com/nehasawant/audittrail-ai.git)
+        cd audittrail-ai
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip install -r requirements.txt
 
-## Conclusion
+2. Launch the SOC Dashboard
 
-AuditTrail AI demonstrates a reliable, practical approach to log analysis. By utilizing deterministic parsing alongside local structural tracking through Cognee, the system handles data pipeline requirements entirely on-device. This setup provides security analysts with a reliable, private tool that operates with minimal overhead, eliminates latency, and ensures data consistency without relying on external endpoints.
+''' Bash
+         python app.py
+
+Open your browser and navigate to http://127.0.0.1:5000 to upload raw log files and observe live processing!
+
+
+###   Conclusion
+
+AuditTrail AI demonstrates a reliable, practical approach to log analysis. By utilizing deterministic parsing alongside local structural tracking through Cognee, the system handles data pipeline requirements entirely on-device. This setup provides security analysts with a private tool that operates with minimal overhead, eliminates API latency, and ensures data consistency without relying on external endpoints.
