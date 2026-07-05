@@ -99,6 +99,10 @@ Upload a supported log file to view real-time parsing, security analysis, and in
 
 ---
 
+## Tools
+ * Google gemini AI - Used for the frontend and backend code
+ 
+
 ## Project Workflow
 
 1. Upload a raw security log.
